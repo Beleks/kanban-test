@@ -5,12 +5,21 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      name: "Board",
       redirect: { name: "Tasks" },
-    },
-    {
-      path: "/tasks",
-      name: "Tasks",
-      component: () => import("../views/TasksView.vue"),
+      component: () => import("../views/BoardView.vue"),
+      children: [
+        {
+          path: "tasks",
+          name: "Tasks",
+          component: () => import("../views/TasksView.vue"),
+        },
+        {
+          path: "tasks/:taskId",
+          name: "Task",
+          component: () => import("../views/TaskView.vue"),
+        },
+      ],
     },
   ],
 });
