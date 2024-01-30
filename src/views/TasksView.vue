@@ -11,15 +11,26 @@ const columns = computed(() => boardStore.columns);
 const newTaskFields = ref({});
 const newColumn = ref("");
 
+function createColumn(columnTitle) {
+  columnTitle = columnTitle.trim();
+
+  if (columnTitle.length === 0) {
+    columnTitle = "Без названия";
+  }
+
+  boardStore.createColumn(columnTitle);
+  clearNewColumnField();
+}
+
 function openTask(taskId) {
   router.push({ name: "Task", params: { taskId } });
 }
 
 function createTask(taskText, columnId) {
-  taskText = taskText.trim();
-
-  if (taskText.length === 0) {
+  if (!taskText || taskText.trim().length === 0) {
     taskText = "Без названия";
+  } else {
+    taskText = taskText.trim();
   }
 
   boardStore.createTask(taskText, columnId);
@@ -29,11 +40,14 @@ function createTask(taskText, columnId) {
 function clearNewTaskField(columnId) {
   newTaskFields.value[columnId] = "";
 }
+function clearNewColumnField() {
+  newColumn.value = "";
+}
 </script>
 
 <template>
-  <div class="h-full w-full flex">
-    <div v-for="column in columns" class="w-[300px] mr-2">
+  <div class="h-full w-full flex overflow-x-auto">
+    <div v-for="column in columns" class="min-w-[300px] mr-2">
       <div class="px-2.5 py-1.5 flex justify-between items-center bg-zinc-900 rounded">
         <div class="grow mr-2">
           <input
@@ -60,19 +74,20 @@ function clearNewTaskField(columnId) {
       </div>
       <div
         v-for="task in column.tasks"
-        class="px-2.5 py-1.5 cursor-pointer shadow-xl bg-zinc-900 rounded mt-2 text-ellipsis overflow-hidden"
+        class="px-2.5 py-1.5 cursor-pointer shadow-xl bg-zinc-900 rounded mt-2 text-ellipsis overflow-hidden w-[300px]"
         @click="openTask(task.id)"
       >
         {{ task.text }}
       </div>
     </div>
-    <div class="w-[300px] mr-2">
+    <div class="min-w-[300px] mr-2">
       <div class="px-2.5 py-1.5 flex justify-between items-center bg-zinc-900 rounded">
         <input
           class="w-full font-bold bg-zinc-900 outline-none"
           type="text"
+          @keyup.enter="createColumn(newColumn)"
           v-model="newColumn"
-          placeholder="Название стадии"
+          placeholder="Введите название стадии"
         />
       </div>
       <div v-show="newColumn" class="text-xs px-2.5 py-0.5">

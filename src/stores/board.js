@@ -41,6 +41,14 @@ export const useBoardStore = defineStore("board", () => {
       text: taskText,
     });
   }
+  function createColumn(columnTitle) {
+    columnIdCounter.value = columnIdCounter.value + 1;
+    columns.value.push({
+      id: columnIdCounter.value,
+      title: columnTitle,
+      tasks: [],
+    });
+  }
   function deleteTask(params) {}
 
   return { columns, createColumn, deleteColumn, createTask, deleteTask };
