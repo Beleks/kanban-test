@@ -22,6 +22,10 @@ function createColumn(columnTitle) {
   clearNewColumnField();
 }
 
+function deleteColumn(columnId) {
+  boardStore.deleteColumn(columnId);
+}
+
 function openTask(taskId) {
   router.push({ name: "Task", params: { taskId } });
 }
@@ -58,7 +62,7 @@ function clearNewColumnField() {
           />
         </div>
 
-        <TrashIcon class="stroke-zinc-400 hover:stroke-zinc-50 cursor-pointer" />
+        <TrashIcon class="stroke-zinc-400 hover:stroke-zinc-50 cursor-pointer" @click="deleteColumn(column.id)" />
       </div>
       <hr class="my-2" />
       <div>

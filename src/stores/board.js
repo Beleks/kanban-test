@@ -31,8 +31,6 @@ export const useBoardStore = defineStore("board", () => {
     },
   ]);
 
-  function createColumn(params) {}
-  function deleteColumn(params) {}
   function createTask(taskText, columnId) {
     let currentColumn = columns.value.find((column) => column.id === columnId);
     taskIdCounter.value = taskIdCounter.value + 1;
@@ -41,6 +39,8 @@ export const useBoardStore = defineStore("board", () => {
       text: taskText,
     });
   }
+  function deleteTask(params) {}
+
   function createColumn(columnTitle) {
     columnIdCounter.value = columnIdCounter.value + 1;
     columns.value.push({
@@ -49,7 +49,10 @@ export const useBoardStore = defineStore("board", () => {
       tasks: [],
     });
   }
-  function deleteTask(params) {}
+  function deleteColumn(columnId) {
+    let index = columns.value.findIndex((column) => column.id === columnId);
+    columns.value.splice(index, 1);
+  }
 
   return { columns, createColumn, deleteColumn, createTask, deleteTask };
 });
