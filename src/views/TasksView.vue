@@ -1,9 +1,11 @@
 <script setup>
 import TrashIcon from "@/components/icons/TrashIcon.vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
 
 import { useBoardStore } from "@/stores/board";
 import { ref, computed } from "vue";
+
+const router = useRouter();
 
 const boardStore = useBoardStore();
 

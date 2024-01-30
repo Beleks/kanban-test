@@ -39,7 +39,28 @@ export const useBoardStore = defineStore("board", () => {
       text: taskText,
     });
   }
-  function deleteTask(params) {}
+  function deleteTask(taskId) {
+    for (let i = 0; i < columns.value.length; i++) {
+      const tasks = columns.value[i].tasks;
+      for (let j = 0; j < tasks.length; j++) {
+        if (tasks[j].id === taskId) {
+          tasks.splice(j, 1);
+        }
+      }
+    }
+  }
+
+  function getTask(taskId) {
+    for (let i = 0; i < columns.value.length; i++) {
+      const tasks = columns.value[i].tasks;
+      for (let j = 0; j < tasks.length; j++) {
+        if (tasks[j].id === taskId) {
+          return tasks[j];
+        }
+      }
+    }
+    return null;
+  }
 
   function createColumn(columnTitle) {
     columnIdCounter.value = columnIdCounter.value + 1;
@@ -54,5 +75,5 @@ export const useBoardStore = defineStore("board", () => {
     columns.value.splice(index, 1);
   }
 
-  return { columns, createColumn, deleteColumn, createTask, deleteTask };
+  return { columns, createColumn, deleteColumn, createTask, deleteTask, getTask };
 });
